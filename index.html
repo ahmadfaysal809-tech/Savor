@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAVOR | Modern Dining Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        gold: {
+                            400: '#D4AF37',
+                            500: '#C5A028',
+                            600: '#B08D1F',
+                        },
+                        charcoal: {
+                            800: '#1a1a1a',
+                            900: '#0f0f0f',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out',
+                        'slide-in-left': 'slideInLeft 0.8s ease-out',
+                        'slide-in-right': 'slideInRight 0.8s ease-out',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideInLeft: {
+                            '0%': { opacity: '0', transform: 'translateX(-50px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        slideInRight: {
+                            '0%': { opacity: '0', transform: 'translateX(50px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .text-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #F4E5C2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .menu-item {
+            transition: all 0.3s ease;
+        }
+        .menu-item:hover {
+            transform: translateX(10px);
+        }
+        .hero-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .image-hover-zoom {
+            overflow: hidden;
+        }
+        .image-hover-zoom img {
+            transition: transform 0.5s ease;
+        }
+        .image-hover-zoom:hover img {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-charcoal-900 text-white font-sans antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <span class="font-serif text-2xl font-bold text-gradient tracking-wider">SAVOR</span>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#home" class="text-sm uppercase tracking-widest hover:text-gold-400 transition-colors">Home</a>
+                    <a href="#about" class="text-sm uppercase tracking-widest hover:text-gold-400 transition-colors">Our Story</a>
+                    <a href="#menu" class="text-sm uppercase tracking-widest hover:text-gold-400 transition-colors">Menu</a>
+                    <a href="#gallery" class="text-sm uppercase tracking-widest hover:text-gold-400 transition-colors">Gallery</a>
+                    <a href="#reservations" class="px-6 py-2 border border-gold-400 text-gold-400 hover:bg-gold-400 hover:text-charcoal-900 transition-all duration-300 uppercase text-sm tracking-widest">Reservations</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-white">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-charcoal-800 absolute w-full border-t border-gray-800">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#home" class="block py-3 text-sm uppercase tracking-widest hover:text-gold-400">Home</a>
+                <a href="#about" class="block py-3 text-sm uppercase tracking-widest hover:text-gold-400">Our Story</a>
+                <a href="#menu" class="block py-3 text-sm uppercase tracking-widest hover:text-gold-400">Menu</a>
+                <a href="#gallery" class="block py-3 text-sm uppercase tracking-widest hover:text-gold-400">Gallery</a>
+                <a href="#reservations" class="block py-3 text-gold-400 uppercase tracking-widest">Reservations</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg min-h-screen flex items-center justify-center relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-charcoal-900"></div>
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <p class="text-gold-400 uppercase tracking-[0.3em] text-sm mb-4 animate-fade-in-up">Est. 2024</p>
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight animate-fade-in-up" style="animation-delay: 0.2s">
+                Taste the <span class="text-gradient italic">Extraordinary</span>
+            </h1>
+            <p class="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light animate-fade-in-up" style="animation-delay: 0.4s">
+                Where culinary artistry meets modern elegance. Experience a symphony of flavors crafted with passion and precision.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style="animation-delay: 0.6s">
+                <a href="#reservations" class="px-8 py-4 bg-gold-500 text-charcoal-900 font-semibold uppercase tracking-widest hover:bg-gold-400 transition-all duration-300 transform hover:scale-105">
+                    Book a Table
+                </a>
+                <a href="#menu" class="px-8 py-4 border border-white text-white font-semibold uppercase tracking-widest hover:bg-white hover:text-charcoal-900 transition-all duration-300">
+                    View Menu
+                </a>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i data-lucide="chevron-down" class="w-6 h-6 text-white opacity-60"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-charcoal-900 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-64 h-64 bg-gold-500 rounded-full filter blur-[120px] opacity-10"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <p class="text-gold-400 uppercase tracking-[0.2em] text-sm mb-4">Our Philosophy</p>
+                    <h2 class="font-serif text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                        Crafting Memories Through <span class="italic text-gray-400">Culinary Excellence</span>
+                    </h2>
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        At Savor, we believe dining is more than sustenance—it's an experience. Our executive chef combines locally-sourced ingredients with innovative techniques to create dishes that tell a story.
+                    </p>
+                    <p class="text-gray-400 mb-8 leading-relaxed">
+                        Every plate is a canvas, every meal a celebration. From our open kitchen to your table, we invite you to witness the passion behind every creation.
+                    </p>
+                    <div class="grid grid-cols-3 gap-8 border-t border-gray-800 pt-8">
+                        <div>
+                            <h4 class="font-serif text-3xl font-bold text-gold-400 mb-1">15+</h4>
+                            <p class="text-sm text-gray-500 uppercase tracking-wider">Years Experience</p>
+                        </div>
+                        <div>
+                            <h4 class="font-serif text-3xl font-bold text-gold-400 mb-1">50+</h4>
+                            <p class="text-sm text-gray-500 uppercase tracking-wider">Unique Dishes</p>
+                        </div>
+                        <div>
+                            <h4 class="font-serif text-3xl font-bold text-gold-400 mb-1">4.9</h4>
+                            <p class="text-sm text-gray-500 uppercase tracking-wider">Guest Rating</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative reveal">
+                    <div class="absolute -inset-4 border border-gold-400/30 transform translate-x-4 translate-y-4"></div>
+                    <div class="image-hover-zoom relative">
+                        <img src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Chef plating food" class="w-full h-[600px] object-cover">
+                    </div>
+                    <div class="absolute -bottom-6 -left-6 bg-charcoal-800 p-6 border border-gold-400/20 max-w-xs">
+                        <p class="font-serif italic text-lg text-gray-300">"Cooking is an art, but dining is the masterpiece."</p>
+                        <p class="text-gold-400 text-sm mt-2 uppercase tracking-wider">— Chef Marcus Chen</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24 bg-charcoal-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <p class="text-gold-400 uppercase tracking-[0.2em] text-sm mb-4">Culinary Journey</p>
+                <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4">Our Menu</h2>
+                <div class="w-24 h-1 bg-gold-400 mx-auto"></div>
+            </div>
+
+            <!-- Menu Categories -->
+            <div class="flex justify-center gap-8 mb-12 flex-wrap reveal">
+                <button onclick="filterMenu('all')" class="menu-filter active px-6 py-2 border-b-2 border-gold-400 text-gold-400 uppercase tracking-widest text-sm transition-all">All</button>
+                <button onclick="filterMenu('starters')" class="menu-filter px-6 py-2 border-b-2 border-transparent text-gray-400 hover:text-gold-400 uppercase tracking-widest text-sm transition-all">Starters</button>
+                <button onclick="filterMenu('mains')" class="menu-filter px-6 py-2 border-b-2 border-transparent text-gray-400 hover:text-gold-400 uppercase tracking-widest text-sm transition-all">Mains</button>
+                <button onclick="filterMenu('desserts')" class="menu-filter px-6 py-2 border-b-2 border-transparent text-gray-400 hover:text-gold-400 uppercase tracking-widest text-sm transition-all">Desserts</button>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-x-16 gap-y-8" id="menu-container">
+                <!-- Starters -->
+                <div class="menu-item-group starters reveal">
+                    <div class="flex justify-between items-baseline border-b border-gray-700 pb-4 mb-4 menu-item cursor-pointer group">
+                        <div>
+                            <h3 class="font-serif text-xl font-semibold group-hover:text-gold-400 transition-colors">Truffle Arancini</h3>
+                            <p class="text-gray-500 text-sm mt-1">Wild mushroom risotto balls, black truffle aioli</p>
+                        </div>
+                        <span class="font-serif text-gold-400 text-xl">$16</span>
+                    </div>
+                </div>
+                <div class="menu-item-group starters reveal">
+                    <div class="flex justify-between items-baseline border-b border-gray-700 pb-4 mb-4 menu-item cursor-pointer group">
+                        <div>
+                            <h3 class="font-serif text-xl font-semibold group-hover:text-gold-400 transition-colors">Yellowfin Tuna Tartare</h3>
+                            <p class="text-gray-500 text-sm mt-1">Avocado mousse, sesame crisp, wasabi pearls</p>
+                        </div>
+                        <span class="font-serif text-gold-400 text-xl">$24</span>
+                    </div>
+                </div>
+                
+                <!-- Mains -->
+                <div class="menu-item-group mains reveal">
+                    <div class="flex justify-between items-baseline border-b border-gray-700 pb-4 mb-4 menu-item cursor-pointer group">
+                        <div>
+                            <h3 class="font-serif text-xl font-semibold group-hover:text-gold-400 transition-colors">Wagyu Beef Tenderloin</h3>
+                            <p class="text-gray-500 text-sm mt-1">A5 grade, bone marrow crust, red wine reduction</p>
+                        </div>
+                        <span class="font-serif text-gold-400 text-xl">$65</span>
+                    </div>
+                </div>
+                <div class="menu-item-group mains reveal">
+                    <div class="flex justify-between items-baseline border-b border-gray-700 pb-4 mb-4 menu-item cursor-pointer group">
+                        <div>
+                            <h3 class="font-serif text-xl font-semibold group-hover:text-gold-400 transition-colors">Pan-Seared Sea Bass</h3>
+                            <p class="text-gray-500 text-sm mt-1">Champagne beurre blanc, caviar, micro herbs</p>
+                        </div>
+                        <span class="font-serif text-gold-400 text-xl">$42</span>
+                    </div>
+                </div>
+                <div class="menu-item-group mains reveal">
+                    <div class="flex justify-between items-baseline border-b border-gray-700 pb-4 mb-4 menu-item cursor-pointer group">
+                        <div>
+                            <h3 class="font-serif text-xl font-semibold group-hover:text-gold-400 transition-colors">Wild Mushroom Risotto</h3>
+                            <p class="text-gray-500 text-sm mt-1">Porcini, chanterelle, truffle oil, aged parmesan</p>
+                        </div>
+                        <span class="font-serif text-gold-400 text-xl">$32</span>
+                    </div>
+                </div>
+                <div class="menu-item-group mains reveal">
+                    <div class="flex justify-between items-baseline border-b border-gray-700 pb-4 mb-4 menu-item cursor-pointer group">
+                        <div>
+                            <h3 class="font-serif text-xl font-semibold group-hover:text-gold-400 transition-colors">Lamb Rack</h3>
+                            <p class="text-gray-500 text-sm mt-1">Herb crust, fondant potato, mint jus</p>
+                        </div>
+                        <span class="font-serif text-gold-400 text-xl">$48</span>
+                    </div>
+                </div>
+
+                <!-- Desserts -->
+                <div class="menu-item-group desserts reveal">
+                    <div class="flex justify-between items-baseline border-b border-gray-700 pb-4 mb-4 menu-item cursor-pointer group">
+                        <div>
+                            <h3 class="font-serif text-xl font-semibold group-hover:text-gold-400 transition-colors">Dark Chocolate Fondant</h3>
+                            <p class="text-gray-500 text-sm mt-1">Salted caramel core, vanilla bean ice cream</p>
+                        </div>
+                        <span class="font-serif text-gold-400 text-xl">$16</span>
+                    </div>
+                </div>
+                <div class="menu-item-group desserts reveal">
+                    <div class="flex justify-between items-baseline border-b border-gray-700 pb-4 mb-4 menu-item cursor-pointer group">
+                        <div>
+                            <h3 class="font-serif text-xl font-semibold group-hover:text-gold-400 transition-colors">Yuzu Crème Brûlée</h3>
+                            <p class="text-gray-500 text-sm mt-1">Citrus zest, shortbread biscuit</p>
+                        </div>
+                        <span class="font-serif text-gold-400 text-xl">$14</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12 reveal">
+                <a href="#" class="inline-flex items-center gap-2 text-gold-400 uppercase tracking-widest text-sm hover:text-gold-300 transition-colors border-b border-gold-400 pb-1">
+                    View Full Wine List <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-24 bg-charcoal-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <p class="text-gold-400 uppercase tracking-[0.2em] text-sm mb-4">Visual Feast</p>
+                <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4">Gallery</h2>
+                <div class="w-24 h-1 bg-gold-400 mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[300px]">
+                <div class="md:col-span-2 md:row-span-2 image-hover-zoom reveal cursor-pointer group relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Restaurant interior" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-white font-serif text-2xl italic">The Dining Room</span>
+                    </div>
+                </div>
+                <div class="image-hover-zoom reveal cursor-pointer group relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dish presentation" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-white font-serif text-xl italic">Plating</span>
+                    </div>
+                </div>
+                <div class="image-hover-zoom reveal cursor-pointer group relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cocktail" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-white font-serif text-xl italic">Craft Cocktails</span>
+                    </div>
+                </div>
+                <div class="image-hover-zoom reveal cursor-pointer group relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1550966871-3ed3c47e2ce2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chef cooking" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-white font-serif text-xl italic">The Kitchen</span>
+                    </div>
+                </div>
+                <div class="md:col-span-2 image-hover-zoom reveal cursor-pointer group relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Restaurant atmosphere" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-white font-serif text-2xl italic">Evening Ambiance</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reservations Section -->
+    <section id="reservations" class="py-24 bg-charcoal-800 relative">
+        <div class="absolute inset-0 opacity-20">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Background" class="w-full h-full object-cover">
+        </div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="glass-effect p-8 md:p-12 reveal">
+                <div class="text-center mb-10">
+                    <p class="text-gold-400 uppercase tracking-[0.2em] text-sm mb-4">Book Your Experience</p>
+                    <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4">Reservations</h2>
+                    <p class="text-gray-400">Secure your table for an unforgettable dining experience</p>
+                </div>
+
+                <form id="reservation-form" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm uppercase tracking-wider text-gray-400 mb-2">Name</label>
+                            <input type="text" required class="w-full bg-charcoal-900 border border-gray-700 px-4 py-3 text-white focus:border-gold-400 focus:outline-none transition-colors" placeholder="Your name">
+                        </div>
+                        <div>
+                            <label class="block text-sm uppercase tracking-wider text-gray-400 mb-2">Email</label>
+                            <input type="email" required class="w-full bg-charcoal-900 border border-gray-700 px-4 py-3 text-white focus:border-gold-400 focus:outline-none transition-colors" placeholder="your@email.com">
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm uppercase tracking-wider text-gray-400 mb-2">Date</label>
+                            <input type="date" required class="w-full bg-charcoal-900 border border-gray-700 px-4 py-3 text-white focus:border-gold-400 focus:outline-none transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-sm uppercase tracking-wider text-gray-400 mb-2">Time</label>
+                            <select required class="w-full bg-charcoal-900 border border-gray-700 px-4 py-3 text-white focus:border-gold-400 focus:outline-none transition-colors">
+                                <option value="">Select time</option>
+                                <option value="17:00">5:00 PM</option>
+                                <option value="17:30">5:30 PM</option>
+                                <option value="18:00">6:00 PM</option>
+                                <option value="18:30">6:30 PM</option>
+                                <option value="19:00">7:00 PM</option>
+                                <option value="19:30">7:30 PM</option>
+                                <option value="20:00">8:00 PM</option>
+                                <option value="20:30">8:30 PM</option>
+                                <option value="21:00">9:00 PM</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm uppercase tracking-wider text-gray-400 mb-2">Guests</label>
+                            <select required class="w-full bg-charcoal-900 border border-gray-700 px-4 py-3 text-white focus:border-gold-400 focus:outline-none transition-colors">
+                                <option value="1">1 Guest</option>
+                                <option value="2" selected>2 Guests</option>
+                                <option value="3">3 Guests</option>
+                                <option value="4">4 Guests</option>
+                                <option value="5">5 Guests</option>
+                                <option value="6">6 Guests</option>
+                                <option value="7+">7+ Guests</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm uppercase tracking-wider text-gray-400 mb-2">Special Requests</label>
+                        <textarea rows="3" class="w-full bg-charcoal-900 border border-gray-700 px-4 py-3 text-white focus:border-gold-400 focus:outline-none transition-colors" placeholder="Dietary restrictions, special occasions..."></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gold-500 text-charcoal-900 font-semibold uppercase tracking-widest py-4 hover:bg-gold-400 transition-all duration-300 transform hover:scale-[1.02]">
+                        Confirm Reservation
+                    </button>
+                </form>
+
+                <div id="confirmation-message" class="hidden mt-6 p-4 bg-green-900/30 border border-green-500 text-green-400 text-center">
+                    <i data-lucide="check-circle" class="w-6 h-6 mx-auto mb-2"></i>
+                    <p class="font-semibold">Reservation Request Received!</p>
+                    <p class="text-sm">We'll confirm your booking shortly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal-900 border-t border-gray-800 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div class="md:col-span-2">
+                    <span class="font-serif text-3xl font-bold text-gradient tracking-wider block mb-4">SAVOR</span>
+                    <p class="text-gray-400 max-w-sm mb-6">Elevating dining to an art form. Join us for an unforgettable culinary journey where every dish tells a story.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full border border-gray-700 flex items-center justify-center hover:border-gold-400 hover:text-gold-400 transition-all">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-gray-700 flex items-center justify-center hover:border-gold-400 hover:text-gold-400 transition-all">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-gray-700 flex items-center justify-center hover:border-gold-400 hover:text-gold-400 transition-all">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-serif text-lg font-semibold mb-4 text-white">Contact</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-gold-400 flex-shrink-0 mt-0.5"></i>
+                            <span>123 Culinary Avenue<br>New York, NY 10001</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="phone" class="w-5 h-5 text-gold-400"></i>
+                            <span>(555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="mail" class="w-5 h-5 text-gold-400"></i>
+                            <span>hello@savor.com</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-serif text-lg font-semibold mb-4 text-white">Hours</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex justify-between">
+                            <span>Mon - Thu</span>
+                            <span>5pm - 10pm</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>Fri - Sat</span>
+                            <span>5pm - 11pm</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>Sunday</span>
+                            <span>4pm - 9pm</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm">&copy; 2024 Savor Restaurant. All rights reserved.</p>
+                <div class="flex gap-6 text-sm text-gray-500">
+                    <a href="#" class="hover:text-gold-400 transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-gold-400 transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-charcoal-900/95', 'backdrop-blur-md', 'shadow-lg');
+                navbar.classList.remove('bg-transparent', 'py-4');
+                navbar.classList.add('py-2');
+            } else {
+                navbar.classList.remove('bg-charcoal-900/95', 'backdrop-blur-md', 'shadow-lg', 'py-2');
+                navbar.classList.add('bg-transparent', 'py-4');
+            }
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Menu filtering
+        function filterMenu(category) {
+            // Update buttons
+            document.querySelectorAll('.menu-filter').forEach(btn => {
+                btn.classList.remove('border-gold-400', 'text-gold-400');
+                btn.classList.add('border-transparent', 'text-gray-400');
+            });
+            event.target.classList.remove('border-transparent', 'text-gray-400');
+            event.target.classList.add('border-gold-400', 'text-gold-400');
+
+            // Filter items
+            const items = document.querySelectorAll('.menu-item-group');
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'block';
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }, 10);
+                } else {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        item.style.display = 'none';
+                    }, 300);
+                }
+            });
+        }
+
+        // Form submission
+        document.getElementById('reservation-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.textContent;
+            
+            btn.textContent = 'Processing...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                document.getElementById('confirmation-message').classList.remove('hidden');
+                btn.textContent = originalText;
+                btn.disabled = false;
+                e.target.reset();
+                
+                setTimeout(() => {
+                    document.getElementById('confirmation-message').classList.add('hidden');
+                }, 5000);
+            }, 1500);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
